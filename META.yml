@@ -5,6 +5,7 @@ build_requires:
   Carp: 0
   HTML::Entities: 0
   Test::More: 0
+  URI::file: 0
   WWW::Curl::Easy: 0
 distribution_type: module
 generated_by: Module::Install version 0.67

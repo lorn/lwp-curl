@@ -17,10 +17,10 @@
 #     NAME => q[LWP::Curl]
 #     NO_META => q[1]
 #     PL_FILES => {  }
-#     PREREQ_PM => { Test::More=>q[0], URI::file=>q[0], HTML::Entities=>q[0], Carp=>q[0], WWW::Curl::Easy=>q[0] }
+#     PREREQ_PM => { Test::More=>q[0], HTML::Entities=>q[0], Carp=>q[0], WWW::Curl::Easy=>q[0] }
 #     VERSION => q[0.05]
 #     dist => { PREOP=>q[$(PERL) -I. "-MModule::Install::Admin" -e "dist_preop(q($(DISTVNAME)))"] }
-#     test => { TESTS=>q[t/00-load.t t/boilerplate.t t/get.t t/pod-coverage.t t/pod.t t/timeout.t] }
+#     test => { TESTS=>q[t/00-load.t t/boilerplate.t t/get.t t/pod-coverage.t t/pod.t] }
 
 # --- MakeMaker post_initialize section:
 
@@ -736,7 +736,7 @@ $(MAKE_APERL_FILE) : $(FIRST_MAKEFILE) pm_to_blib
 TEST_VERBOSE=0
 TEST_TYPE=test_$(LINKTYPE)
 TEST_FILE = test.pl
-TEST_FILES = t/00-load.t t/boilerplate.t t/get.t t/pod-coverage.t t/pod.t t/timeout.t
+TEST_FILES = t/00-load.t t/boilerplate.t t/get.t t/pod-coverage.t t/pod.t
 TESTDB_SW = -d
 
 testdb :: testdb_$(LINKTYPE)
@@ -770,7 +770,6 @@ ppd :
 	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="Carp" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="HTML-Entities" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="Test-More" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="URI-file" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="WWW-Curl-Easy" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <OS NAME="$(OSNAME)" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="darwin-thread-multi-2level-5.8" />' >> $(DISTNAME).ppd

@@ -101,7 +101,7 @@ sub new {
 
     $self->{auto_encode} = delete $args{auto_encode};
     $self->{auto_encode} = 1 unless defined $self->{auto_encode};
-
+	$self->{timeout} = $timeout;	
     $self->{retcode} = undef;
     my $debug = 0;
     $self->{debug} = $debug;
