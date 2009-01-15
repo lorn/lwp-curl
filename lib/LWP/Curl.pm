@@ -143,7 +143,7 @@ sub get {
         $referer = "";
     }
 	
-	$url = uri_escape($url) if $self->{auto_encode};
+	$url = uri_escape($url,"[^:./]") if $self->{auto_encode};
     $self->{agent}->setopt( CURLOPT_REFERER, $referer );
     $self->{agent}->setopt( CURLOPT_URL,     $url );
     $self->{agent}->setopt( CURLOPT_HTTPGET, 1 );
