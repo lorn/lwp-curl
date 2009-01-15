@@ -3,8 +3,8 @@ abstract: LWP methods implementation with Curl engine
 author: Lindolfo Rodrigues de Oliveira Neto <lorn@cpan.org>
 build_requires: 
   Carp: 0
-  HTML::Entities: 0
   Test::More: 0
+  URI::Escape: 0
   URI::file: 0
   WWW::Curl::Easy: 0
 distribution_type: module
@@ -18,4 +18,4 @@ no_index:
   directory: 
     - inc
     - t
-version: 0.05
+version: 0.06

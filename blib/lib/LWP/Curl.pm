@@ -5,7 +5,7 @@ use strict;
 use WWW::Curl::Easy;
 use Carp qw(croak);
 use Data::Dumper;
-use HTML::Entities;
+use URI::Escape;
 
 =head1 NAME
 
@@ -17,7 +17,7 @@ Version 0.05
 
 =cut
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 =head1 SYNOPSIS
 
@@ -101,10 +101,13 @@ sub new {
 
     $self->{auto_encode} = delete $args{auto_encode};
     $self->{auto_encode} = 1 unless defined $self->{auto_encode};
+	
 	$self->{timeout} = $timeout;	
+   
     $self->{retcode} = undef;
-    my $debug = 0;
-    $self->{debug} = $debug;
+
+    my $debug = delete $args{debug};
+    $self->{debug} = 0 unless defined $debug;
     print STDERR "\n Hash Debug: \n" . Dumper($self) . "\n" if $debug;
     $self->{agent} = WWW::Curl::Easy->new();
     $self->{agent}->setopt( CURLOPT_TIMEOUT,     $timeout );
@@ -139,9 +142,8 @@ sub get {
     if ( !$referer ) {
         $referer = "";
     }
-    
-	encode_entities($url) if $self->{auto_encode};
-	print STDERR "URL: $url\n";
+	
+	$url = uri_escape($url,"[^:./]") if $self->{auto_encode};
     $self->{agent}->setopt( CURLOPT_REFERER, $referer );
     $self->{agent}->setopt( CURLOPT_URL,     $url );
     $self->{agent}->setopt( CURLOPT_HTTPGET, 1 );
@@ -152,7 +154,6 @@ sub get {
     $self->{retcode} = $self->{agent}->perform;
 
     if ( $self->{retcode} == 0 ) {
-
         #print("\nTransfer went ok\n") if $self->{debug};
         return $content;
     }
@@ -247,7 +248,8 @@ sub timeout {
     if ( !$timeout ) {
         return $self->{timeout};
     }
-    $self->{agent}->setopt( CURLOPT_TIMEOUT, $timeout );
+	$self->{timeout} = $timeout;
+    $self->{agent}->setopt( CURLOPT_TIMEOUT, $self->timeout );
 }
 
 =head2 $lwpcurl->auto_encode($value)

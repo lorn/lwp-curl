@@ -17,10 +17,10 @@
 #     NAME => q[LWP::Curl]
 #     NO_META => q[1]
 #     PL_FILES => {  }
-#     PREREQ_PM => { Test::More=>q[0], URI::file=>q[0], HTML::Entities=>q[0], Carp=>q[0], WWW::Curl::Easy=>q[0] }
-#     VERSION => q[0.05]
+#     PREREQ_PM => { Test::More=>q[0], URI::Escape=>q[0], URI::file=>q[0], Carp=>q[0], WWW::Curl::Easy=>q[0] }
+#     VERSION => q[0.06]
 #     dist => { PREOP=>q[$(PERL) -I. "-MModule::Install::Admin" -e "dist_preop(q($(DISTVNAME)))"] }
-#     test => { TESTS=>q[t/00-load.t t/boilerplate.t t/get.t t/pod-coverage.t t/pod.t t/timeout.t] }
+#     test => { TESTS=>q[t/00-load.t t/boilerplate.t t/get.t t/pod-coverage.t t/pod.t] }
 
 # --- MakeMaker post_initialize section:
 
@@ -59,11 +59,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = LWP::Curl
 NAME_SYM = LWP_Curl
-VERSION = 0.05
+VERSION = 0.06
 VERSION_MACRO = VERSION
-VERSION_SYM = 0_05
+VERSION_SYM = 0_06
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 0.05
+XS_VERSION = 0.06
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -254,7 +254,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = LWP-Curl
-DISTVNAME = LWP-Curl-0.05
+DISTVNAME = LWP-Curl-0.06
 
 
 # --- MakeMaker macro section:
@@ -736,7 +736,7 @@ $(MAKE_APERL_FILE) : $(FIRST_MAKEFILE) pm_to_blib
 TEST_VERBOSE=0
 TEST_TYPE=test_$(LINKTYPE)
 TEST_FILE = test.pl
-TEST_FILES = t/00-load.t t/boilerplate.t t/get.t t/pod-coverage.t t/pod.t t/timeout.t
+TEST_FILES = t/00-load.t t/boilerplate.t t/get.t t/pod-coverage.t t/pod.t
 TESTDB_SW = -d
 
 testdb :: testdb_$(LINKTYPE)
@@ -762,14 +762,14 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="0,05,0,0">' > $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="0,06,0,0">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <TITLE>$(DISTNAME)</TITLE>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>LWP methods implementation with Curl engine</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Lindolfo Rodrigues de Oliveira Neto &lt;lorn@cpan.org&gt;</AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="Carp" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="HTML-Entities" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="Test-More" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="URI-Escape" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="URI-file" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="WWW-Curl-Easy" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <OS NAME="$(OSNAME)" />' >> $(DISTNAME).ppd
