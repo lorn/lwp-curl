@@ -208,8 +208,8 @@ sub post {
         #print STDERR "var: $var - $hash_form->{$var}\n";
     }
 
-    $url         = encode($url)         if $self->{auto_encode};
-    $post_string = encode($post_string) if $self->{auto_encode};
+	$url = uri_escape($url,"[^:./]") if $self->{auto_encode};
+	$post_string = uri_escape($post_string,"[^:./]") if $self->{auto_encode};
 
     $self->{agent}->setopt( CURLOPT_POSTFIELDS, $post_string );
     $self->{agent}->setopt( CURLOPT_POST,       1 );
