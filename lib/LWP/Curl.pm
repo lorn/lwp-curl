@@ -17,7 +17,7 @@ Version 0.05
 
 =cut
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 =head1 SYNOPSIS
 
@@ -67,6 +67,12 @@ Turn on/off auto encode urls, for get/post.
 
 Set how deep the spider will follow  when receive HTTP 301 ( Redirect ). The default is 3.
 
+=item * C<< proxy => $proxyurl >>
+
+Set the proxy in the constructor, $proxyurl will be like:  
+    http://myproxy.com:3128/
+    http://
+
 =back
 
 =cut
@@ -104,6 +110,9 @@ sub new {
 	
 	$self->{timeout} = $timeout;	
    
+    my $proxy = delete $args{proxy};
+    $self->{proxy} = undef unless defined $proxy;
+    
     $self->{retcode} = undef;
 
     my $debug = delete $args{debug};
@@ -117,8 +126,7 @@ sub new {
     $self->{agent}->setopt( CURLOPT_MAXREDIRS,   $maxredirs );
     $self->{agent}->setopt( CURLOPT_FOLLOWLOCATION, $followlocation );
     $self->{agent}->setopt( CURLOPT_SSL_VERIFYPEER, 0 );
-
-    #CURLOPT_COOKIESESSION,$cookie;
+    $self->{agent}->setopt( CURLOPT_PROXY, $proxy ) if $proxy;
 
     return bless $self, $class;
 }
@@ -252,6 +260,25 @@ sub timeout {
     $self->{agent}->setopt( CURLOPT_TIMEOUT, $self->timeout );
 }
 
+=head2 $lwpcurl->proxy($sec)
+
+  Set timeout, default 180
+  libcurl respects the environment variables http_proxy, ftp_proxy,
+  all_proxy etc, if any of those are set. The $lwpcurl->proxy option does
+  however override any possibly set environment variables. 
+
+=cut
+
+sub proxy {
+    my ( $self, $proxy ) = @_;
+    if ( !$proxy ) {
+        return $self->{proxy};
+    }
+	$self->{proxy} = $proxy;
+    print STDERR "Proxy: " . $self->proxy . "\n";
+    $self->{agent}->setopt( CURLOPT_PROXY, $self->proxy );
+}
+
 =head2 $lwpcurl->auto_encode($value)
 
   Turn on/off auto_encode
@@ -342,8 +369,6 @@ This is a small list of features I'm plan to add. Feel free to contribute with y
 
 =item * Support Cookies
 
-=item * Support Proxys
-
 =item * PASS in all tests of LWP
 
 =item * Make a patch to L<WWW::Mechanize>, todo change engine, like "new(engine => 'LWP::Curl')"
@@ -393,10 +418,11 @@ L<http://search.cpan.org/dist/LWP-Curl>
 =head1 ACKNOWLEDGEMENTS
 
 Thanks to Breno G. Oliveira for the great tips.    
+Thanks for the LWP and WWW::Mechanize for the inspiration.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2008 Lindolfo Rodrigues de Oliveira Neto, all rights reserved.
+Copyright 2009 Lindolfo Rodrigues de Oliveira Neto, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
