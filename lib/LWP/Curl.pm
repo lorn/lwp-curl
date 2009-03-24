@@ -71,7 +71,11 @@ Set how deep the spider will follow  when receive HTTP 301 ( Redirect ). The def
 
 Set the proxy in the constructor, $proxyurl will be like:  
     http://myproxy.com:3128/
-    http://
+    http://username:password@proxy.com:3128/
+
+  libcurl respects the environment variables http_proxy, ftp_proxy,
+  all_proxy etc, if any of those are set. The $lwpcurl->proxy option does
+  however override any possibly set environment variables. 
 
 =back
 
@@ -260,12 +264,19 @@ sub timeout {
     $self->{agent}->setopt( CURLOPT_TIMEOUT, $self->timeout );
 }
 
-=head2 $lwpcurl->proxy($sec)
+=head2 $lwpcurl->proxy($proxyurl)
 
-  Set timeout, default 180
-  libcurl respects the environment variables http_proxy, ftp_proxy,
-  all_proxy etc, if any of those are set. The $lwpcurl->proxy option does
-  however override any possibly set environment variables. 
+Set the proxy in the constructor, $proxyurl will be like:  
+    http://myproxy.com:3128/
+    http://username:password@proxy.com:3128/
+
+libcurl respects the environment variables http_proxy, ftp_proxy,
+all_proxy etc, if any of those are set. The $lwpcurl->proxy option does
+however override any possibly set environment variables. 
+
+To disable proxy set $lwpcurl->proxy('');
+
+$lwpcurl->proxy without argument, return the current proxy
 
 =cut
 
@@ -275,7 +286,6 @@ sub proxy {
         return $self->{proxy};
     }
 	$self->{proxy} = $proxy;
-    print STDERR "Proxy: " . $self->proxy . "\n";
     $self->{agent}->setopt( CURLOPT_PROXY, $self->proxy );
 }
 
