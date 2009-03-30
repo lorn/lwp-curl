@@ -13,7 +13,7 @@ LWP::Curl - LWP methods implementation with Curl engine
 
 =head1 VERSION
 
-Version 0.05
+Version 0.07
 
 =cut
 
@@ -77,6 +77,10 @@ Set the proxy in the constructor, $proxyurl will be like:
   all_proxy etc, if any of those are set. The $lwpcurl->proxy option does
   however override any possibly set environment variables. 
 
+=item * C<< cookie_jar => number >>
+
+Set how deep the spider will follow  when receive HTTP 301 ( Redirect ). The default is 3.
+
 =back
 
 =cut
@@ -130,6 +134,7 @@ sub new {
     $self->{agent}->setopt( CURLOPT_MAXREDIRS,   $maxredirs );
     $self->{agent}->setopt( CURLOPT_FOLLOWLOCATION, $followlocation );
     $self->{agent}->setopt( CURLOPT_SSL_VERIFYPEER, 0 );
+    $self->{agent}->setopt( CURLOPT_VERBOSE, 0 ); #ubuntu bug
     $self->{agent}->setopt( CURLOPT_PROXY, $proxy ) if $proxy;
 
     return bless $self, $class;
@@ -264,31 +269,6 @@ sub timeout {
     $self->{agent}->setopt( CURLOPT_TIMEOUT, $self->timeout );
 }
 
-=head2 $lwpcurl->proxy($proxyurl)
-
-Set the proxy in the constructor, $proxyurl will be like:  
-    http://myproxy.com:3128/
-    http://username:password@proxy.com:3128/
-
-libcurl respects the environment variables http_proxy, ftp_proxy,
-all_proxy etc, if any of those are set. The $lwpcurl->proxy option does
-however override any possibly set environment variables. 
-
-To disable proxy set $lwpcurl->proxy('');
-
-$lwpcurl->proxy without argument, return the current proxy
-
-=cut
-
-sub proxy {
-    my ( $self, $proxy ) = @_;
-    if ( !$proxy ) {
-        return $self->{proxy};
-    }
-	$self->{proxy} = $proxy;
-    $self->{agent}->setopt( CURLOPT_PROXY, $self->proxy );
-}
-
 =head2 $lwpcurl->auto_encode($value)
 
   Turn on/off auto_encode
@@ -367,6 +347,55 @@ sub agent_alias {
     }
 }
 
+=head2 $lwpcurl->proxy($proxyurl)
+
+Set the proxy in the constructor, $proxyurl will be like:  
+    http://myproxy.com:3128/
+    http://username:password@proxy.com:3128/
+
+libcurl respects the environment variables http_proxy, ftp_proxy,
+all_proxy etc, if any of those are set. The $lwpcurl->proxy option does
+however override any possibly set environment variables. 
+
+To disable proxy set $lwpcurl->proxy('');
+
+$lwpcurl->proxy without argument, return the current proxy
+
+=cut
+
+sub proxy {
+    my ( $self, $proxy ) = @_;
+    if ( !$proxy ) {
+        return $self->{proxy};
+    }
+	$self->{proxy} = $proxy;
+    $self->{agent}->setopt( CURLOPT_PROXY, $self->proxy );
+}
+
+=head2 $lwpcurl->cookie_jar($proxyurl)
+
+Set the proxy in the constructor, $proxyurl will be like:  
+    http://myproxy.com:3128/
+    http://username:password@proxy.com:3128/
+
+libcurl respects the environment variables http_proxy, ftp_proxy,
+all_proxy etc, if any of those are set. The $lwpcurl->proxy option does
+however override any possibly set environment variables. 
+
+To disable proxy set $lwpcurl->proxy('');
+
+$lwpcurl->proxy without argument, return the current proxy
+
+=cut
+
+sub cookie_jar {
+    my ( $self, $proxy ) = @_;
+    if ( !$proxy ) {
+        return $self->{proxy};
+    }
+	$self->{proxy} = $proxy;
+    $self->{agent}->setopt( CURLOPT_PROXY, $self->proxy );
+}
 =head1 TODO
 
 This is a small list of features I'm plan to add. Feel free to contribute with your wishlist and comentaries!
