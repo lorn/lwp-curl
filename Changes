@@ -14,3 +14,4 @@ Revision history for LWP-Curl
 		Removed get test
 		Dependency WWW::Curl::Easy added, thanks to Daniel Mantovani
 0.06	Resolved a litle bug when get method does not return anything
+0.07    $lwp->proxy working :) and some bug fixed resolved

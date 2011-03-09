@@ -1,4 +1,3 @@
-.cvsignore
 Changes
 inc/Module/AutoInstall.pm
 inc/Module/Install.pm
@@ -18,6 +17,8 @@ META.yml
 README
 t/00-load.t
 t/boilerplate.t
+t/error.t
+t/get.html
 t/get.t
 t/pod-coverage.t
 t/pod.t
