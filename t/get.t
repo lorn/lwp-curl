@@ -1,6 +1,7 @@
 #!perl -T
 
-use Test::More tests => 3;
+use Test::More tests => 5;
+use Test::Exception;
 use URI::file;
 
 BEGIN {
@@ -8,9 +9,11 @@ BEGIN {
     use_ok( 'LWP::Curl' );
 }
 
-my $lwpcurl = LWP::Curl->new( timeout => 5);
+my $lwpcurl = LWP::Curl->new( timeout => 5 );
 isa_ok ( $lwpcurl, 'LWP::Curl' ) ;
 
 my $uri = URI::file->new_abs( 't/get.html' )->as_string;
 
 ok( $lwpcurl->get( $uri ) , "Fetched:  $uri" ) or die q{Can't get test page};
+ok( $lwpcurl->get( $uri, "http://some.refer" ) , "Fetched:  $uri" ) or die q{Can't get test page};
+throws_ok { $lwpcurl->get( "http://127.0.0.1/fooquuxbar.xhtml" ) } qr /error happened/;

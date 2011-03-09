@@ -173,8 +173,7 @@ sub get {
     if ( $self->{retcode} == 0 ) {
         print("\nTransfer went ok\n") if $self->{debug};
         return $content;
-    }
-    else {
+    } else {
         croak(  "An error happened: Host $url "
               . $self->{agent}->strerror( $self->{retcode} )
               . " ($self->{retcode})\n" );
@@ -280,9 +279,7 @@ sub auto_encode {
     if ( !$value ) {
         return $self->{auto_encode};
     }
-    else {
-        $self->{auto_encode} = $value;
-    }
+    $self->{auto_encode} = $value;
 }
 
 =head2 $lwpcurl->agent_alias($alias)
