@@ -171,7 +171,7 @@ sub get {
     $self->{retcode} = $self->{agent}->perform;
 
     if ( $self->{retcode} == 0 ) {
-        #print("\nTransfer went ok\n") if $self->{debug};
+        print("\nTransfer went ok\n") if $self->{debug};
         return $content;
     }
     else {

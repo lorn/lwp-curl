@@ -4,7 +4,8 @@ name     'LWP-Curl';
 all_from 'lib/LWP/Curl.pm';
 author   'Lindolfo Rodrigues de Oliveira Neto <lorn@cpan.org>';
 
-build_requires 'Test::More';
+test_requires 'Test::More';
+test_requires 'Test::Exception';
 build_requires 'URI::file';
 build_requires 'WWW::Curl::Easy';
 build_requires 'Carp';
