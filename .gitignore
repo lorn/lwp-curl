@@ -9,3 +9,6 @@ Makefile.old
 nytprof
 nytprof.out
 MANIFEST.bak
+*.tar.gz
+*.swp
+cover_db

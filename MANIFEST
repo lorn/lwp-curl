@@ -17,9 +17,11 @@ META.yml
 README
 t/00-load.t
 t/boilerplate.t
+t/default_values.t
 t/error.t
 t/get.html
 t/get.t
 t/pod-coverage.t
 t/pod.t
+t/set_values.t
 upload.t
