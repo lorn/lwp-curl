@@ -362,7 +362,7 @@ $lwpcurl->proxy without argument, return the current proxy
 
 sub proxy {
     my ( $self, $proxy ) = @_;
-    if ( !$proxy ) {
+    if ( !defined $proxy ) {
         return $self->{proxy};
     }
 	$self->{proxy} = $proxy;
