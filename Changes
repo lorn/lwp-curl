@@ -17,3 +17,5 @@ Revision history for LWP-Curl
 0.07    Forgot change the Change :/
 0.07-1  $lwp->proxy working :) and some bug fixed resolved
         Tests improvements
+0.08    Just change the version, because 0.07-1 is'nt a valid version :/
+0.09    Bugfix: "When $lwpcurl->proxy('') is called, it is simply ignored" by David Oliveira
