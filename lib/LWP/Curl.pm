@@ -13,21 +13,21 @@ LWP::Curl - LWP methods implementation with Curl engine
 
 =head1 VERSION
 
-Version 0.07
+Version 0.10
 
 =cut
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 =head1 SYNOPSIS
 
 Use libcurl like LWP, $lwpcurl->get($url), $lwpcurl->timeout(15) don't care about Curl API and don't care about html encode
 
-    use LWP::Curl;
-
-    my $lwpcurl = LWP::Curl->new();
-	my $content = $lwpcurl->get('http://search.cpan.org','http://www.cpan.org'); 
-	#get the page http://search.cpan.org passing with referer http://www.cpan.org
+  use LWP::Curl;
+  
+  my $lwpcurl = LWP::Curl->new();
+  my $content = $lwpcurl->get('http://search.cpan.org','http://www.cpan.org'); 
+  # get the page http://search.cpan.org passing with referer http://www.cpan.org
 
 =cut
 
@@ -76,10 +76,6 @@ Set the proxy in the constructor, $proxyurl will be like:
   libcurl respects the environment variables http_proxy, ftp_proxy,
   all_proxy etc, if any of those are set. The $lwpcurl->proxy option does
   however override any possibly set environment variables. 
-
-=item * C<< cookie_jar => number >>
-
-Set how deep the spider will follow  when receive HTTP 301 ( Redirect ). The default is 3.
 
 =back
 
@@ -284,10 +280,9 @@ sub auto_encode {
 
 =head2 $lwpcurl->agent_alias($alias)
    
-   Copy from L<WWW::Mechanize> begin here
-   ____________________________________
-   Sets the user agent string to the expanded version from a table of actual user strings.
-   I<$alias> can be one of the following:
+Sets the user agent string to the expanded version from a table
+of actual user strings.
+I<$alias> can be one of the following:
 
 =over 4
 
@@ -305,16 +300,13 @@ sub auto_encode {
 
 =back
 
-   then it will be replaced with a more interesting one.  For instance,
-   ____________________________________
+then it will be replaced with a more interesting one.  For instance,
 
-   Copy from L<WWW::Mechanize> ends here, but the idea and the data structure is a copy too :) 
-   
-   $lwpcurl->agent_alias( 'Windows IE 6' );
+  $lwpcurl->agent_alias( 'Windows IE 6' );
 
-	   sets your User-Agent to
-	    
-		Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+sets your User-Agent to
+
+  Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
 
 =cut
 
@@ -369,30 +361,6 @@ sub proxy {
     $self->{agent}->setopt( CURLOPT_PROXY, $self->proxy );
 }
 
-=head2 $lwpcurl->cookie_jar($proxyurl)
-
-Set the proxy in the constructor, $proxyurl will be like:  
-    http://myproxy.com:3128/
-    http://username:password@proxy.com:3128/
-
-libcurl respects the environment variables http_proxy, ftp_proxy,
-all_proxy etc, if any of those are set. The $lwpcurl->proxy option does
-however override any possibly set environment variables. 
-
-To disable proxy set $lwpcurl->proxy('');
-
-$lwpcurl->proxy without argument, return the current proxy
-
-=cut
-
-sub cookie_jar {
-    my ( $self, $proxy ) = @_;
-    if ( !$proxy ) {
-        return $self->{proxy};
-    }
-	$self->{proxy} = $proxy;
-    $self->{agent}->setopt( CURLOPT_PROXY, $self->proxy );
-}
 =head1 TODO
 
 This is a small list of features I'm plan to add. Feel free to contribute with your wishlist and comentaries!
