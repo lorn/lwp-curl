@@ -235,14 +235,14 @@ sub post {
     $self->{retcode} = $self->{agent}->perform;
 
     if ( $self->{retcode} == 0 ) {
+        my $code;
 
-        #print("Transfer went ok\n");
-        #print STDERR $content;
-        return $content;
-
-        #my $response_code = $selfcurl->getinfo(CURLINFO_HTTP_CODE);
-    }
-    else {
+        $code = $self->{agent}->getinfo(CURLINFO_HTTP_CODE);
+        if ($code =~ /^2/) {
+            return $content;
+        }
+        croak "$code request not successful\n";
+    } else {
         croak(  "An error happened: Host $url "
               . $self->{agent}->strerror( $self->{retcode} )
               . " ($self->{retcode})\n" );
