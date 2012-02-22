@@ -1,21 +1,51 @@
-Revision history for LWP-Curl
+Revision history for Perl module LWP::Curl
 
-0.01    Wed 03 Dec 2008
-        First version, released on an unsuspecting world.
-0.02	Wed 03 Dec 2008
-		Some language problems
-		Fix two perlcritic warnings
-0.03	Thu 04 Dec 2008
-		$lwpcurl->post working! :)
-		Auto url encode
-0.04    Fri 05 Dec 2008
-		wrong get test
-0.05	Fri 12 Dec 2008
-		Removed get test
-		Dependency WWW::Curl::Easy added, thanks to Daniel Mantovani
-0.06	Resolved a litle bug when get method does not return anything
-0.07    Forgot change the Change :/
-0.07-1  $lwp->proxy working :) and some bug fixed resolved
-        Tests improvements
-0.08    Just change the version, because 0.07-1 is'nt a valid version :/
-0.09    Bugfix: "When $lwpcurl->proxy('') is called, it is simply ignored" by David Oliveira
+0.10 unreleased
+
+    - removed cookie_jar method and doc for it, as they were cut&paste from proxy method
+    - reformatted this file according to CPAN::Changes::Spec
+
+0.09 2011-07-10
+
+    - Bugfix: "When $lwpcurl->proxy('') is called, it is simply ignored" by David Oliveira
+
+0.08 2011-04-11
+
+    - Just change the version, because 0.07-1 isn't a valid version :/
+
+0.07-1 2011-03-09
+
+    - $lwp->proxy working :) and some bug fixed resolved
+    - Tests improvements
+
+0.07 2011-03-09
+
+    - Forgot change the Change :/
+
+0.06 2009-01-12
+
+    - Resolved a litle bug when get method does not return anything
+
+0.05 2008-12-12
+
+    - Removed get test
+    - Dependency WWW::Curl::Easy added, thanks to Daniel Mantovani
+
+0.04 2008-12-05
+
+    - wrong get test
+
+0.03 2008-12-04
+
+    - $lwpcurl->post working! :)
+    - Auto url encode
+
+0.02 2008-12-03
+
+    - Some language problems
+    - Fix two perlcritic warnings
+
+0.01 2008-12-03
+
+    - First version, released on an unsuspecting world.
+
