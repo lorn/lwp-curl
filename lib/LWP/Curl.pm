@@ -423,7 +423,8 @@ L<http://search.cpan.org/dist/LWP-Curl>
 
 Thanks to Breno G. Oliveira for the great tips.    
 Thanks for the LWP and WWW::Mechanize for the inspiration.
-
+Thanks for Neil Bowers for patches
+ 
 =head1 COPYRIGHT & LICENSE
 
 Copyright 2009 Lindolfo Rodrigues de Oliveira Neto, all rights reserved.

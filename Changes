@@ -1,12 +1,13 @@
 Revision history for Perl module LWP::Curl
 
-0.10 unreleased
+0.10 2012-04-10 
 
     - removed cookie_jar method and doc for it,
       as they were cut&paste from proxy method
     - reformatted this file according to CPAN::Changes::Spec
     - get() wasn't croak'ing for non 2xx status codes, which was causing
       some of the tests to fail
+    - Removed debug from test
 
 0.09 2011-07-10
 
