@@ -12,7 +12,6 @@ my $lwpcurl = LWP::Curl->new( headers => 1,
                               user_agent => "Foo",
                               maxredirs => 10,
                               followlocation => 0,
-                              debug => 1, 
                               proxy => "http://localhost:3128");
 isa_ok ( $lwpcurl, 'LWP::Curl' ) ;
 $lwpcurl->timeout(42);
