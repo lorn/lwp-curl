@@ -7,9 +7,10 @@ author   'Lindolfo Rodrigues de Oliveira Neto <lorn@cpan.org>';
 test_requires 'Test::More';
 test_requires 'Test::Exception';
 build_requires 'URI::file';
-build_requires 'WWW::Curl::Easy';
-build_requires 'Carp';
-build_requires 'URI::Escape';
+requires 'WWW::Curl::Easy';
+requires 'Carp';
+requires 'URI::Escape';
+requires 'Data::Dumper';
 auto_install;
 
 WriteAll;
