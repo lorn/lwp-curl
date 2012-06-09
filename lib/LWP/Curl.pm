@@ -13,23 +13,24 @@ LWP::Curl - LWP methods implementation with Curl engine
 
 =head1 VERSION
 
-Version 0.10
+Version 0.11
 
 =cut
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 =head1 SYNOPSIS
 
-Use libcurl like LWP, $lwpcurl->get($url), $lwpcurl->timeout(15) don't care about Curl API and don't care about html encode
-
   use LWP::Curl;
-  
+   
   my $lwpcurl = LWP::Curl->new();
   my $content = $lwpcurl->get('http://search.cpan.org','http://www.cpan.org'); 
   # get the page http://search.cpan.org passing with referer http://www.cpan.org
 
-=cut
+=head1 DESCRIPTION
+
+LWP::Curl provides an interface similar to the LWP library, but is built on top of the Curl library.
+The simple LWP-style interface means you don't have to know anything about the underlying library.
 
 =head1 Constructor
 
@@ -140,60 +141,68 @@ sub new {
 
 =head2 $lwpcurl->get($url,$referer)
 
-  Get content of $url, passando $referer se definido
+Get content of $url, passing $referer if defined.
 
     use LWP::Curl;
 	my $referer = 'http://www.example.com';
 	my $get_url = 'http://www.example.com/foo';
     my $lwpcurl = LWP::Curl->new();
 	my $content = $lwpcurl->get($get_url, $referer); 
+
+The C<get> method croak()'s if the request fails, so wrap an C<eval> around it if you want to
+handle failure more elegantly.
+
 =cut
 
 sub get {
     my ( $self, $url, $referer ) = @_;
+    my $agent = $self->{agent};
 
     if ( !$referer ) {
         $referer = "";
     }
 	
 	$url = uri_escape($url,"[^:./]") if $self->{auto_encode};
-    $self->{agent}->setopt( CURLOPT_REFERER, $referer );
-    $self->{agent}->setopt( CURLOPT_URL,     $url );
-    $self->{agent}->setopt( CURLOPT_HTTPGET, 1 );
+    $agent->setopt( CURLOPT_REFERER, $referer );
+    $agent->setopt( CURLOPT_URL,     $url );
+    $agent->setopt( CURLOPT_HTTPGET, 1 );
 
     my $content = "";
     open( my $fileb, ">", \$content );
-    $self->{agent}->setopt( CURLOPT_WRITEDATA, $fileb );
-    $self->{retcode} = $self->{agent}->perform;
+    $agent->setopt( CURLOPT_WRITEDATA, $fileb );
+    $self->{retcode} = $agent->perform;
 
     if ( $self->{retcode} == 0 ) {
-        print("\nTransfer went ok\n") if $self->{debug};
-        return $content;
-    } else {
-        croak(  "An error happened: Host $url "
+        my $response_code = $agent->getinfo(CURLINFO_HTTP_CODE);
+        if ($response_code == 200 || ($response_code == 0 && $url =~ m!^file:!)) {
+            print("\nTransfer went ok\n") if $self->{debug};
+            return $content;
+        }
+    }
+
+    croak( "An error happened: Host $url "
               . $self->{agent}->strerror( $self->{retcode} )
               . " ($self->{retcode})\n" );
-		return undef;
-    }
+    return undef;
 }
 
 =head2 $lwpcurl->post($url,$hash_form,$referer) 
  
-  POST the $hash_form fields in $url, passing $referer if defined
+POST the $hash_form fields in $url, passing $referer if defined:
 
-    use LWP::Curl;
-
-    my $lwpcurl = LWP::Curl->new();
-
-	my $referer = 'http://www.examplesite.com/';
-	my $post_url = 'http://www.examplesite.com/post/';
-
-	my $hash_form = { 
-		'field1' => 'value1',
-		'field2' => 'value2',
-	}
-
-	my $content = $lwpcurl->post($post_url, $hash_form, $referer); 
+  use LWP::Curl;
+  
+  my $lwpcurl = LWP::Curl->new();
+  
+  my $referer = 'http://www.examplesite.com/';
+  my $post_url = 'http://www.examplesite.com/post/';
+  
+  my $hash_form = { 
+    'field1' => 'value1',
+    'field2' => 'value2',
+  }
+  
+  my $content = $lwpcurl->post($post_url, $hash_form, $referer); 
 
 =cut
 
@@ -251,7 +260,8 @@ sub post {
 
 =head2 $lwpcurl->timeout($sec)
 
-  Set timeout, default 180
+Set the timeout to use for all subsequent requests, in seconds.
+Defaults to 180 seconds.
 
 =cut
 
@@ -266,7 +276,7 @@ sub timeout {
 
 =head2 $lwpcurl->auto_encode($value)
 
-  Turn on/off auto_encode
+Turn on/off auto_encode.
 
 =cut
 
@@ -394,7 +404,6 @@ automatically be notified of progress on your bug as I make changes.
 You can find documentation for this module with the perldoc command.
 
     perldoc LWP::Curl
-
 
 You can also look for information at:
 
