@@ -12,3 +12,4 @@ MANIFEST.bak
 *.tar.gz
 *.swp
 cover_db
+MYMETA.*
