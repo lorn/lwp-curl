@@ -1,6 +1,6 @@
 Revision history for Perl module LWP::Curl
 
-0.11 2012-06-??
+0.11 2012-06-25
 
     - The get() method now checks the underlying response code,
       and only returns success if the request really was successful.
@@ -8,6 +8,8 @@ Revision history for Perl module LWP::Curl
     - In Makefile.PL the runtime required modules were listed as
       build requirements. Changed them to be runtime requirements.
     - Data::Dumper wasn't listed as a runtime requirement.
+    - Bugfix: rt #77727: -T in test scripts causes test failures
+
 
 0.10 2012-04-10 
 
