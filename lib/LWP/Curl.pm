@@ -58,15 +58,15 @@ Set the user agent string. The default is  'Mozilla/4.0 (compatible; MSIE 6.0; W
 
 =item * C<< followlocation => [0|1] >>
 
-If the spider receive a HTTP 301 ( Redirect ) they will follow?. The default is 1.
+If true, the user-agent will honor HTTP 301 (redirect) status messages. The default is 1.
 
 =item * C<< auto_encode => [0|1] >>
 
-Turn on/off auto encode urls, for get/post.
+If true, urls will be urlencoded for GET and POST requests. Default is 1.
 
 =item * C<< maxredirs => number >>
 
-Set how deep the spider will follow  when receive HTTP 301 ( Redirect ). The default is 3.
+Set how many redirect requests will be honored by the user-agent. The default is 3.
 
 =item * C<< proxy => $proxyurl >>
 
@@ -243,7 +243,7 @@ sub post {
     $self->{agent}->setopt( CURLOPT_WRITEDATA, $fileb );
     $self->{retcode} = $self->{agent}->perform;
 
-    if ( $self->{retcode} == 0 ) {
+    if ( ! defined $self->{retcode} ) {
         my $code;
 
         $code = $self->{agent}->getinfo(CURLINFO_HTTP_CODE);
