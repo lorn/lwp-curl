@@ -221,16 +221,8 @@ sub post {
         #print STDERR Dumper $hash_form;
     }
 
-    my $post_string = "";
-    foreach my $var ( keys %{$hash_form} ) {
-        $post_string = $post_string . "$var=$hash_form->{$var}";
-        $post_string = $post_string . "&";
-
-        #print STDERR "var: $var - $hash_form->{$var}\n";
-    }
-
 	$url = uri_escape($url,"[^:./]") if $self->{auto_encode};
-	$post_string = uri_escape($post_string,"[^:./]") if $self->{auto_encode};
+    my $post_string = join '&', map {; uri_escape($_) . '=' . uri_escape($hash_form->{$_}) } keys %{ $hash_form };
 
     $self->{agent}->setopt( CURLOPT_POSTFIELDS, $post_string );
     $self->{agent}->setopt( CURLOPT_POST,       1 );
