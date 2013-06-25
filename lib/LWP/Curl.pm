@@ -2,7 +2,7 @@ package LWP::Curl;
 
 use warnings;
 use strict;
-use WWW::Curl::Easy;
+use Net::Curl::Easy qw(:constants);
 use Carp qw(croak);
 use Data::Dumper;
 use URI::Escape;
@@ -123,7 +123,7 @@ sub new {
     my $debug = delete $args{debug};
     $self->{debug} = 0 unless defined $debug;
     print STDERR "\n Hash Debug: \n" . Dumper($self) . "\n" if $debug;
-    $self->{agent} = WWW::Curl::Easy->new();
+    $self->{agent} = Net::Curl::Easy->new();
     $self->{agent}->setopt( CURLOPT_TIMEOUT,     $timeout );
     $self->{agent}->setopt( CURLOPT_USERAGENT,   $user_agent );
     $self->{agent}->setopt( CURLOPT_HEADER,      $headers );
@@ -172,7 +172,7 @@ sub get {
     $agent->setopt( CURLOPT_WRITEDATA, $fileb );
     $self->{retcode} = $agent->perform;
 
-    if ( $self->{retcode} == 0 ) {
+    if ( ! defined $self->{retcode} ) {
         my $response_code = $agent->getinfo(CURLINFO_HTTP_CODE);
         if ($response_code == 200 || ($response_code == 0 && $url =~ m!^file:!)) {
             print("\nTransfer went ok\n") if $self->{debug};
