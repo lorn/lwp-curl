@@ -13,7 +13,7 @@ LWP::Curl - LWP methods implementation with Curl engine
 
 =head1 VERSION
 
-Version 0.11
+Version 0.13
 
 =cut
 
@@ -424,8 +424,9 @@ L<http://search.cpan.org/dist/LWP-Curl>
 
 Thanks to Breno G. Oliveira for the great tips.    
 Thanks for the LWP and WWW::Mechanize for the inspiration.
-Thanks for Neil Bowers for patches
- 
+Thanks for Neil Bowers for the patches
+Thanks for Mark Allen for the patches 
+
 =head1 COPYRIGHT & LICENSE
 
 Copyright 2009 Lindolfo Rodrigues de Oliveira Neto, all rights reserved.

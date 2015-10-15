@@ -1,7 +1,8 @@
 Revision history for Perl module LWP::Curl
 
-0.13
-    - Just fixing the Change file
+0.13 2015-10-15
+    - Working with Net::Curl instead of WWW::Curl, now works on OSX by Mark Allen (mrallen1)
+      This was the rt #86413
 
 0.11.1 2012-06-25
 
