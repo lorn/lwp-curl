@@ -2,7 +2,7 @@ package LWP::Curl;
 
 use warnings;
 use strict;
-use WWW::Curl::Easy;
+use Net::Curl::Easy qw(:constants);
 use Carp qw(croak);
 use Data::Dumper;
 use URI::Escape;
@@ -58,15 +58,15 @@ Set the user agent string. The default is  'Mozilla/4.0 (compatible; MSIE 6.0; W
 
 =item * C<< followlocation => [0|1] >>
 
-If the spider receive a HTTP 301 ( Redirect ) they will follow?. The default is 1.
+If true, the user-agent will honor HTTP 301 (redirect) status messages. The default is 1.
 
 =item * C<< auto_encode => [0|1] >>
 
-Turn on/off auto encode urls, for get/post.
+If true, urls will be urlencoded for GET and POST requests. Default is 1.
 
 =item * C<< maxredirs => number >>
 
-Set how deep the spider will follow  when receive HTTP 301 ( Redirect ). The default is 3.
+Set how many redirect requests will be honored by the user-agent. The default is 3.
 
 =item * C<< proxy => $proxyurl >>
 
@@ -123,7 +123,7 @@ sub new {
     my $debug = delete $args{debug};
     $self->{debug} = 0 unless defined $debug;
     print STDERR "\n Hash Debug: \n" . Dumper($self) . "\n" if $debug;
-    $self->{agent} = WWW::Curl::Easy->new();
+    $self->{agent} = Net::Curl::Easy->new();
     $self->{agent}->setopt( CURLOPT_TIMEOUT,     $timeout );
     $self->{agent}->setopt( CURLOPT_USERAGENT,   $user_agent );
     $self->{agent}->setopt( CURLOPT_HEADER,      $headers );
@@ -172,7 +172,7 @@ sub get {
     $agent->setopt( CURLOPT_WRITEDATA, $fileb );
     $self->{retcode} = $agent->perform;
 
-    if ( $self->{retcode} == 0 ) {
+    if ( ! defined $self->{retcode} ) {
         my $response_code = $agent->getinfo(CURLINFO_HTTP_CODE);
         if ($response_code == 200 || ($response_code == 0 && $url =~ m!^file:!)) {
             print("\nTransfer went ok\n") if $self->{debug};
@@ -221,16 +221,8 @@ sub post {
         #print STDERR Dumper $hash_form;
     }
 
-    my $post_string = "";
-    foreach my $var ( keys %{$hash_form} ) {
-        $post_string = $post_string . "$var=$hash_form->{$var}";
-        $post_string = $post_string . "&";
-
-        #print STDERR "var: $var - $hash_form->{$var}\n";
-    }
-
 	$url = uri_escape($url,"[^:./]") if $self->{auto_encode};
-	$post_string = uri_escape($post_string,"[^:./]") if $self->{auto_encode};
+    my $post_string = join '&', map {; uri_escape($_) . '=' . uri_escape($hash_form->{$_}) } keys %{ $hash_form };
 
     $self->{agent}->setopt( CURLOPT_POSTFIELDS, $post_string );
     $self->{agent}->setopt( CURLOPT_POST,       1 );
@@ -243,7 +235,7 @@ sub post {
     $self->{agent}->setopt( CURLOPT_WRITEDATA, $fileb );
     $self->{retcode} = $self->{agent}->perform;
 
-    if ( $self->{retcode} == 0 ) {
+    if ( ! defined $self->{retcode} ) {
         my $code;
 
         $code = $self->{agent}->getinfo(CURLINFO_HTTP_CODE);
