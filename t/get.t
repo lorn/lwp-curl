@@ -16,4 +16,4 @@ my $uri = URI::file->new_abs( 't/get.html' )->as_string;
 
 ok( $lwpcurl->get( $uri ) , "Fetched:  $uri" ) or die q{Can't get test page};
 ok( $lwpcurl->get( $uri, "http://some.refer" ) , "Fetched:  $uri" ) or die q{Can't get test page};
-throws_ok { $lwpcurl->get( "http://127.0.0.1/fooquuxbar.xhtml" ) } 'Net::Curl::Easy::Code';
+throws_ok { $lwpcurl->get( "http://127.0.0.1:1337/fooquuxbar.xhtml" ) } 'Net::Curl::Easy::Code';
